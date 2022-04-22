@@ -50,7 +50,6 @@ prometheus-client==0.12.0
 pycparser==2.21
 Pygments==2.10.0
 pyparsing==3.0.6
-pypiwin32==223
 pyrsistent==0.18.0
 pysimilar==0.4
 PySimpleGUI==4.55.1
