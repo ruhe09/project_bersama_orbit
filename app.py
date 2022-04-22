@@ -8,6 +8,7 @@ import os
 app = Flask(__name__)
 
 @app.route("/")
+@app.route("/index")
 def index():
 	return render_template('dashboard.html',landing=1,title='YourService!')
 @app.route('/badan',methods=['GET','POST'])
@@ -47,5 +48,5 @@ def province():
 
         """
 if __name__ == '__main__':
-    #port = int(os.environ.get('PORT', 5000))
-    app.run(port=51366)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(port=port)
