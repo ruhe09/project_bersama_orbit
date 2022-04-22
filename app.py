@@ -8,7 +8,6 @@ import os
 app = Flask(__name__)
 
 @app.route("/")
-@app.route("/index")
 def index():
 	return render_template('dashboard.html',landing=1,title='YourService!')
 @app.route('/badan',methods=['GET','POST'])
