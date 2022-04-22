@@ -1,1 +1,1 @@
-web: gunicorn -b :51366 app:app
+web: gunicorn app:app --log-file=-
