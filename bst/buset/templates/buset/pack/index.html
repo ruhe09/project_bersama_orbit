@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{post.title_text}}</title>
+    <title>{{post.post_title}}</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -333,7 +333,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{post.user}}</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{post.post_user}}</span>
                                 <img class="img-profile rounded-circle"
                                     src="img/">
                             </a>
@@ -370,7 +370,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">{{post.title_text}}</h1>
+                        <h1 class="h3 mb-0 text-gray-800">{{post.post_title}}</h1>
                     </div>
 
                     <!-- Content Row -->
@@ -382,11 +382,11 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <img class="rounded-circle" src="/buset/{{post.post_image}}"
+                                            <img class="rounded-circle" src="/buset/static/{{post_image}}"
                                             alt="...">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Price</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{% load idr %}{{post.price | currency}}</div>
+                                            {% comment %} <div class="h5 mb-0 font-weight-bold text-gray-800">{% load idr %}{{post.post_price | currency}}</div> {% endcomment %}
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -424,7 +424,7 @@
                                     </div>
                                 </div>
                                 <!-- Card Body -->
-                                <div class="card-body">{{post.description_text}}
+                                <div class="card-body">{{post_description}}
                                     <div class="chart-area">
                                         <canvas id="myAreaChart"></canvas>
                                     </div>

@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-l*ncf+5_q$y!i5!o2diinimj$haojx%9nmlx@f3#+qz=@e9k*k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["160.19.227.93"]
+ALLOWED_HOSTS = ["160.19.227.93","localhost"]
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'buset.apps.BusetConfig',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ WSGI_APPLICATION = 'bst.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'e-tech',
+        'NAME': 'test',
         'USER': 'root',
         'PASSWORD':'',
         'HOST':'localhost',
