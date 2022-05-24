@@ -1,20 +1,19 @@
 from gc import get_objects
-from django.shortcuts import render, get_object_or_404, redirect
-from .forms import UserForm
-from django.contrib.auth import login
-from django.contrib import messages
-from django.http import HttpResponse
-from django.template import loader
-from django.contrib.humanize.templatetags.humanize import intcomma
-from django import template
-from django.urls import reverse
-from django.views import generic
-from django.views.generic import ListView, DetailView
-from django.contrib.auth import login, authenticate #add this
-from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm #add this
 
 from buset.models import Posting
+from django import template
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.humanize.templatetags.humanize import intcomma
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template import loader
+from django.urls import reverse
+from django.views import generic
+from django.views.generic import DetailView, ListView
+
+from .forms import UserForm
 from .models import Posting
 
 register = template.Library()
@@ -44,10 +43,11 @@ def register_proc(request):
         form = UserForm(request.POST)
         if form.is_valid():
             user = form.save()
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
-            messages.success(request, "Registration successful." )
+            messages.success(request, "Berhasil!." )
             return redirect("main")
-        messages.error(request, "Unsuccessful registration. Invalid information.")
+        messages.error(request, "Registrasi gagal, ada yang salah nih!.")
     form = UserForm()
     return render (request=request, template_name="buset/register.html", context={"register_form":form})
 
@@ -60,11 +60,15 @@ def login_proc(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.info(request, f"You are now logged in as {username}.")
+                messages.info(request, f"Selamat datang {username}.")
                 return redirect("main")
             else:
-                messages.error(request,"Invalid username or password.")
+                messages.error(request,"Kayaknya username atau password salah.")
         else:
-            messages.error(request,"Invalid username or password.")
+            messages.error(request,"Kayaknya username atau password salah.")
     form = AuthenticationForm()
     return render(request=request, template_name="buset/login.html", context={"login_form":form})
+def logout_proc(request):
+    logout(request)
+    messages.info(request, "Selamat tinggal!") 
+    return redirect("main")

@@ -8,5 +8,7 @@ urlpatterns = [
     path('register',views.register_proc, name='register'),
     path('register/',views.register_proc, name='register'),
     path('login',views.login_proc, name='login'),
+    path('logout',views.logout_proc, name='logout'),
+    # path('profile',views.profile, name='profile'),
     path('accounts/', include('allauth.urls')),
 ]

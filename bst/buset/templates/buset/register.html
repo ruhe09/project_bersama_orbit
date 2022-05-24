@@ -1,33 +1,54 @@
 {% extends "buset/base.html" %}
 
-{% block content %} 
+{% block content %}      
 
-{% load crispy_forms_tags %}         
+{% load crispy_forms_tags %}
 {% load socialaccount %}
 {% load static %}
-<!--Register--> 
-<div class="uk-container uk-padding">
-	<h1>Register</h1>
-	<form method="POST">
-		{% csrf_token %}
-		{{ register_form|crispy }}                    
-		<button class="uk-button uk-button-primary" type="submit">Register</button>
-	</form>
+<!--register--> 
+<div class="uk-container uk-grid uk-padding ">
+<div class="uk-flex uk-grid-column-small uk-grid-match uk-width-responsive">
+	<div class='uk-width-1-2 uk-card uk-card-body uk-card-small uk-width-1-2 uk-visible@s'>
+		<div class='uk-margin uk-margin-xlarge-top uk-grid-match'>
+			<h1 class='uk-heading-divider uk-heading-large'>RELATE!</h1>
+			<h2  class="uk-heading-medium" >Ayo! jadi bagian dari kami!</h2>
+		</div>
+	</div>
+	<div class='uk-width-auto'>
+		<div class='uk-card uk-card-body uk-card-default uk-card-hover uk-card-small'>
+	  <h3 class='uk-card-title'>Daftar Sekarang</h3>
+  <form method="POST">
+    {% csrf_token %}
+    {{ register_form|crispy }}
+    <button class="uk-button uk-button-primary uk-margin-top" type="submit">Register</button>
+  </form>
 
-	<div class=" signin text-center">
 
-		<a href="{% provider_login_url 'google' %}" class="text-dark"><img src="{% static "buset/btn_google_signin_dark_focus_web.png" %}" style="width:14rem; height:auto"></a>
-	  </div>
-	
-	  <br><br>
-	
-	  <div style="width: 100%; height: 15px; border-bottom: 1px solid lightgray; text-align: center">
-		<span class="text-muted" style="margin-top:-15% !important; font-size: 11px; background-color: white; padding: 0px 10px;">
-		  OR
-		</span>
-	  </div>
 
-	<p class="text-center">Sudah punya akun? <a href="/buset/login">login</a>.</p>
+  <br><br>
+
+  <div style="width: 100%; height: 15px; border-bottom: 1px solid lightgray; text-align: center">
+    <span class="text-muted" style="margin-top:-15% !important; font-size: 11px; background-color: white; padding: 0px 10px;">
+      atau
+    </span>
+  </div>
+
+  <br>
+  <div class="signup text-center">
+
+    <a href="{% provider_login_url 'google' %}" class="text-dark">
+		<div id="gSignInWrapper">
+			<div id="customBtn" class="customGPlusSignIn">
+			  <span class="icon"><img class="uk-margin uk-margin-small-left"style="width:35px; height:35px; vertical-align: middle; " src="{%static 'buset/Google__G__Logo.svg.png' %}"></span>
+			  <span class="buttonText">Google</span>
+			</div>
+	</a>
+  </div>
+  <p class="text-center">Sudah punya akun? <a href="login">Masuk</a>.</p>
+</div>
+</div>
+
+</div>
 </div>
 
 {% endblock %}

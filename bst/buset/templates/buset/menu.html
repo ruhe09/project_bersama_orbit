@@ -1,5 +1,6 @@
+ {% load static %}
  <!-- Content Wrapper -->
- <div id="content-wrapper" class="d-flex flex-column">
+ <div id="content-wrapper" class="d-flex flex-column uk-position-relative">
 
     <!-- Main Content -->
     <div id="content">
@@ -30,7 +31,7 @@
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
 
-                <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                {% comment %} <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                 <li class="nav-item dropdown no-arrow d-sm-none">
                     <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -169,17 +170,18 @@
                         </a>
                         <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                     </div>
-                </li>
+                </li> {% endcomment %}
 
+                {% if user.is_authenticated %} 
                 <div class="topbar-divider d-none d-sm-block"></div>
-
+                
                 <!-- Nav Item - User Information -->
-                <li class="nav-item dropdown no-arrow">
+                <li class="nav-item dropdown no-arrow no">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{post.post_user}}</span>
-                        <img class="img-profile rounded-circle"
-                            src="img/">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                        <img class="img-profile rounded-circle" style='width:40px; height:40px;'
+                            src="{% static 'buset/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg' %}">{{user.username}}
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -196,11 +198,23 @@
                             <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                             Activity Log
                         </a>
+                        
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                        <a class="dropdown-item" href="/buset/logout">
                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             Logout
                         </a>
+                        {% else %}
+                        
+                        <a href="login">
+                            <button class="uk-button uk-margin-small-right">Masuk</button>
+                            
+                        </a>
+                        <a href="register">
+                            <button class="uk-button uk-button-primary">Daftar</button>
+                            
+                        </a>
+                        {% endif %}
                     </div>
                 </li>
 
