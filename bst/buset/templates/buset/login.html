@@ -3,16 +3,33 @@
 {% block content %}      
 
 {% load crispy_forms_tags %}
-
+{% load socialaccount %}
+{% load static %}
 <!--Login--> 
-<div class="container py-5">
+<div class="uk-container uk-padding">
   <h1>Login</h1>
   <form method="POST">
     {% csrf_token %}
     {{ login_form|crispy }}
-    <button class="btn btn-primary" type="submit">Login</button>
+    <button class="uk-button uk-button-primary uk-margin-top" type="submit">Login</button>
   </form>
-  <p class="text-center">Don't have an account? <a href="/buset/register">Create an account</a>.</p>
+
+  <div class=" signin text-center">
+
+    <a href="{% provider_login_url 'google' %}" class="text-dark"><img src="{% static "buset/btn_google_signin_dark_focus_web.png" %}" style="width:14rem; height:auto"></a>
+  </div>
+
+  <br><br>
+
+  <div style="width: 100%; height: 15px; border-bottom: 1px solid lightgray; text-align: center">
+    <span class="text-muted" style="margin-top:-15% !important; font-size: 11px; background-color: white; padding: 0px 10px;">
+      OR
+    </span>
+  </div>
+
+
+  <p class="text-center">Belum punya akun? <a href="/buset/register">Buat akun</a>.</p>
 </div>
+
 
 {% endblock %}
