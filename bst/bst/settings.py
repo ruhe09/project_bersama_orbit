@@ -52,7 +52,9 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    #msg
     'django.contrib.messages',
+    #msg
     'django.contrib.staticfiles',
     'buset.apps.BusetConfig',
     'crispy_forms',
@@ -73,7 +75,7 @@ STATICFILES_DIRS = [
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/buset/'
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -101,6 +103,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    #msg
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
