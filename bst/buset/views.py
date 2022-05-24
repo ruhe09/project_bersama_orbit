@@ -13,8 +13,9 @@ from django.urls import reverse
 from django.views import generic
 from django.views.generic import DetailView, ListView
 
-from .forms import UserForm
+from .forms import UserForm, PostForm
 from .models import Posting
+from django.db import connection
 
 register = template.Library()
 
@@ -23,21 +24,24 @@ register = template.Library()
 #     # return HttpResponse("Index Landing Page.")
 def MainView(request):
     return render(request,'buset/main.html')    
-class PostView(DetailView):
-    template_name = 'buset/pack/index.html'
-    model = Posting
+def PostView(request):
     # context_object_name = 'post'
     # queryset = Posting.objects.all()
     
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
-        context['post'] = Posting.objects.all()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     # Call the base implementation first to get a context
+    #     context = super().get_context_data(**kwargs)
+    #     # Add in a QuerySet of all the books
+    #     context['post'] = Posting.objects.all()
+    #     return context
     # post = get_object_or_404(Posting)
-    # return render(request,'buset/pack/index.html',{'post':post})    
-
+    form = PostForm(request.POST)
+    if form.is_valid():
+        post = form.save()
+        post.backend = 'django.contrib.auth.backends.ModelBackend'
+        messages.success(request, "Berhasil!." )
+        return redirect("post")
+    return render(request=request,template_name='buset/post.html',context={'post_form':form})    
 def register_proc(request):
     if request.method == "POST":
         form = UserForm(request.POST)
@@ -47,6 +51,8 @@ def register_proc(request):
             login(request, user)
             messages.success(request, "Berhasil!." )
             return redirect("main")
+        else:
+            messages.error(request,"Ada error.")
         messages.error(request, "Registrasi gagal, ada yang salah nih!.")
     form = UserForm()
     return render (request=request, template_name="buset/register.html", context={"register_form":form})

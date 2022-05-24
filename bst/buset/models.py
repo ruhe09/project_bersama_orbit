@@ -11,9 +11,9 @@ class Posting(models.Model):
     post_title = models.CharField(max_length=30)
     post_description = models.CharField(max_length=100)
     post_price = models.DecimalField(max_digits=9,decimal_places=0)
-    post_text = models.TextField()
-    post_image = models.ImageField(upload_to="static")
-    post_date = models.DateTimeField(auto_now_add=True)
+    post_text = models.TextField(blank=True)
+    post_image = models.ImageField(null=True, blank=True)
+    post_date = models.DateTimeField(auto_now_add=True, blank=True)
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
     def __str__(self):

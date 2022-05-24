@@ -1,0 +1,22 @@
+{% extends "buset/base.html" %}
+
+{% block content %}      
+
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+{% load static %}
+<!--Login--> 
+
+
+<div class="uk-width-auto uk-padding uk-card uk-card-default uk-card-small uk-card-hover uk-padding uk-margin uk-container">
+    <div class="uk-margin uk-text-center">
+        <h1>Halaman Posting</h1>
+    <form method="POST">
+      {% csrf_token %}
+      {{ post_form|crispy }}
+      <button class="uk-button uk-button-primary uk-margin-top" type="submit">POST</button>
+    </form>
+  
+  </div>
+
+{% endblock %}
