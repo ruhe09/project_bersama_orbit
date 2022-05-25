@@ -1,7 +1,7 @@
 {% extends 'buset/base.html' %}
 {% block content %}
 
-<div class='container'>
+<div class='uk-container uk-grid-row'>
 {% comment %} slideshow {% endcomment %}
 <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow="autoplay:true; animation: push;">
 
@@ -25,5 +25,16 @@
 </div>
 
 
+{% comment %} post {% endcomment %}
+<div class='uk-container uk-flex-center uk-grid uk-grid-small uk-grid-width-responsive '>
+{% for post in posts %}<a href="/buset/media/{{post.post_image}}">
+<div class ="uk-margin-top uk-card uk-card-default uk-card uk-padding-small uk-card-hover uk-card-body ">
+    <img class='imageClip img-fluid mh-50' src="/buset/media/{{post.post_image}}">
+    <p><h1 class="uk-text-default">{{post.post_title}}</p>
+    <p><h2 class="uk-text-small">{% load idr %}{{post.post_price | currency}}</p>
+    <span uk-icon="star"></span> 4.7
+    </div>
+</a>
+{% endfor %}
 </div>
 {% endblock %}

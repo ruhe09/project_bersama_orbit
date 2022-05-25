@@ -23,7 +23,9 @@ register = template.Library()
 # class IndexView(generic.ListView):
 #     # return HttpResponse("Index Landing Page.")
 def MainView(request):
-    return render(request,'buset/main.html')    
+    context = {}
+    context["posts"] = Posting.objects.all()
+    return render(request,'buset/main.html',context)    
 def PostView(request):
     # context_object_name = 'post'
     # queryset = Posting.objects.all()
@@ -35,7 +37,7 @@ def PostView(request):
     #     context['post'] = Posting.objects.all()
     #     return context
     # post = get_object_or_404(Posting)
-    form = PostForm(request.POST)
+    form = PostForm(data=request.POST, files=request.FILES)
     if form.is_valid():
         post = form.save()
         post.backend = 'django.contrib.auth.backends.ModelBackend'
@@ -78,3 +80,13 @@ def logout_proc(request):
     logout(request)
     messages.info(request, "Selamat tinggal!") 
     return redirect("main")
+
+def CartView(request):
+    # form = PostForm(request.POST)
+    # if form.is_valid():
+    #     post = form.save()
+    #     post.backend = 'django.contrib.auth.backends.ModelBackend'
+    #     messages.success(request, "Berhasil!." )
+    #     return redirect("post")
+    form = "s"
+    return render(request=request,template_name='buset/cart.html',context={'post_form':form})  
