@@ -1,8 +1,10 @@
+from buset.models import Posting
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from buset.models import Posting
+from .models import Cv_Model
+
 
 class UserForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -33,3 +35,10 @@ class PostForm(forms.ModelForm):
     # post_text = models.TextField()
     # post_image = models.ImageField(upload_to="static")
     # post_date = models.DateTimeField(auto_now_add=True)
+    
+
+
+class Cv_Upload(forms.ModelForm):
+    class Meta:
+        model = Cv_Model
+        fields = ['image']

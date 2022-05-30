@@ -1,0 +1,28 @@
+{% extends "buset/base.html" %}
+
+{% block content %}      
+
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+{% load static %}
+<!--Login--> 
+
+
+<div class="uk-width-auto uk-padding uk-card uk-card-default uk-card-small uk-card-hover uk-padding uk-margin uk-container">
+    <div class="uk-margin uk-text-center">
+        <h1>Deteksi Layar</h1>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ layar|crispy }}
+      <button class="uk-button uk-button-primary uk-margin-top" type="submit">UNGGAH</button>
+    </form>
+  
+  </div>
+  <div class="mt-4 text-center">
+    {% if predik %}
+        <a href="/buset{{predik}}"><img src="/buset{{predik}}" class="imageClipLayar img-fluid mh-50 mw-50" /></a>
+    {% else %}
+        Untuk prediksi masalah, silakan unggah masalah yang dihadapi, lalu tunggu sistem bekerja.
+    {% endif %}
+</div> 
+{% endblock %}

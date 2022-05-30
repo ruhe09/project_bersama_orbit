@@ -1,49 +1,46 @@
+import io
 from gc import get_objects
-
 from buset.models import Posting
 from django import template
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template import loader
 from django.urls import reverse
 from django.views import generic
 from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView
+from PIL import Image as im
+from .forms import Cv_Upload, PostForm, UserForm
+from .models import Cv_Model, Posting
+import joblib
+import pickle
+import torch
 
-from .forms import UserForm, PostForm
-from .models import Posting
-from django.db import connection
 
 register = template.Library()
 
-# Create your views here.
-# class IndexView(generic.ListView):
-#     # return HttpResponse("Index Landing Page.")
 def MainView(request):
-    context = {}
-    context["posts"] = Posting.objects.all()
-    return render(request,'buset/main.html',context)    
+    context = Posting.objects.all()
+    return render(request,'buset/main.html',{'posts':context})    
+
 def PostView(request):
-    # context_object_name = 'post'
-    # queryset = Posting.objects.all()
-    
-    # def get_context_data(self, **kwargs):
-    #     # Call the base implementation first to get a context
-    #     context = super().get_context_data(**kwargs)
-    #     # Add in a QuerySet of all the books
-    #     context['post'] = Posting.objects.all()
-    #     return context
-    # post = get_object_or_404(Posting)
-    form = PostForm(data=request.POST, files=request.FILES)
-    if form.is_valid():
-        post = form.save()
-        post.backend = 'django.contrib.auth.backends.ModelBackend'
-        messages.success(request, "Berhasil!." )
-        return redirect("post")
-    return render(request=request,template_name='buset/post.html',context={'post_form':form})    
+    form = PostForm(request.POST or None, request.FILES or None)
+    if request.method =='POST':
+        if form.is_valid():
+            post = form.save(commit = False)
+            post.user = request.user;
+            post.save()
+            post.backend = 'django.contrib.auth.backends.ModelBackend'
+            form = PostForm()
+            messages.success(request, "Berhasil!." )
+            return redirect("post")
+    return render(request,'buset/post.html',{'post_form':form})    
+
 def register_proc(request):
     if request.method == "POST":
         form = UserForm(request.POST)
@@ -90,3 +87,46 @@ def CartView(request):
     #     return redirect("post")
     form = "s"
     return render(request=request,template_name='buset/cart.html',context={'post_form':form})  
+
+def Cv_View(request):
+    form = Cv_Upload(request.POST, request.FILES)
+    if form.is_valid():
+        img = request.FILES.get('image')
+        img_instance = Cv_Model(
+            image=img
+        )
+        img_instance.save()
+
+        img_terbaru = Cv_Model.objects.filter().last()
+        img_bytes = img_terbaru.image.read()
+        img = im.open(io.BytesIO(img_bytes))
+
+
+        path_hubconfig = "static/yolov5"
+        path_weightfile = "static/best.pt"
+        # model=joblib.load("static/layar.pkl")
+        model = torch.hub.load(path_hubconfig, 'custom',
+                             path=path_weightfile, source='local')
+        results = model(img, size=640)
+        
+        results.render()
+        for img in results.imgs:
+            img_base64 = im.fromarray(img)
+            img_base64.save("media/yolo_out/gambar_predik.jpg", format="JPEG")
+
+        hasil_predict_img = "/media/yolo_out/gambar_predik.jpg"
+
+        form = Cv_Upload()
+        context = {
+            "layar": form,
+            "predik": hasil_predict_img
+        }
+        return render(request, 'buset/layar.html', context)
+
+    else:
+        form = Cv_Upload()
+    context = {
+        "layar": form
+    }
+    return render(request, 'buset/layar.html', context)
+
