@@ -106,7 +106,7 @@ def Cv_View(request):
 
 
         path_hubconfig = "static/yolov5"
-        path_weightfile = "static/best.pt"
+        path_weightfile = "static/best.pt" #hasil training
         # model=joblib.load("static/layar.pkl")
         model = torch.hub.load(path_hubconfig, 'custom',
                              path=path_weightfile, source='local')
