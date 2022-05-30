@@ -14,4 +14,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('cart/', views.CartView, name='cart'),
     path('layar/', views.Cv_View, name='layar'),
+    path('faq/', views.FAQ, name='faq'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

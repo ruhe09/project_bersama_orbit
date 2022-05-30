@@ -26,7 +26,7 @@ class Posting(models.Model):
     post_image = models.ImageField(upload_to="static/post_img/",null=True, blank=True)
     post_date = models.DateTimeField(auto_now_add=True, blank=True)
     post_date_modified = models.DateTimeField(auto_now=True, null=True)
-    post_slug = models.SlugField(max_length=255,unique=True,blank=True)
+    #post_slug = models.SlugField(max_length=255,unique=True)
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
     def __str__(self):

@@ -88,6 +88,9 @@ def CartView(request):
     form = "s"
     return render(request=request,template_name='buset/cart.html',context={'post_form':form})  
 
+def FAQ(request):
+    return render(request,'buset/faq.html')
+
 def Cv_View(request):
     form = Cv_Upload(request.POST, request.FILES)
     if form.is_valid():
