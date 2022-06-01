@@ -1,93 +1,93 @@
 {% load static %}
-<!-- Content Wrapper -->
-<div id="content-wrapper" class="d-flex flex-column uk-position-relative">
+<nav uk-sticky class="uk-padding-small navbar navbar-expand-sm navbar-light bg-white topbar mb-4 static-top shadow">
+    <a class="navbar-brand" href="/buset/">Relate</a>
 
-   <!-- Main Content -->
-   <div id="content">
 
-       <!-- Topbar -->
-       <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-           <!-- Sidebar Toggle (Topbar) -->
-           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-               <i class="fa fa-bars"></i>
-           </button>
+        <form
+        class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+        <div class="input-group bg-light">
+            <input type="text" class="form-control bg-light border-0 small" placeholder="Ceritakan masalahmu..."
+                aria-label="Search" aria-describedby="basic-addon2"><a class='mx-3 my-2' uk-icon='camera' href='/buset/layar'></a>
+                
+                <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"><span uk-icon="search"></span></i>
+                </button>
+            </div>
+        </div>
+    </form>
 
-           <!-- Topbar Search -->
-           <a href='/buset/'><span class=>Buset</span></a>
-           <form
-               class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-               <div class="input-group bg-light">
-                   <input type="text" class="form-control bg-light border-0 small" placeholder="Ceritakan masalahmu..."
-                       aria-label="Search" aria-describedby="basic-addon2"><a class='mx-3 my-2' uk-icon='camera' href='/buset/layar'></a>
-                       
-                       <div class="input-group-append">
-                       <button class="btn btn-primary" type="button">
-                           <i class="fas fa-search fa-sm"><span uk-icon="search"></span></i>
-                       </button>
-                   </div>
-               </div>
-           </form>
+      <ul class="navbar-nav my-auto">
 
-           <!-- Topbar Navbar -->
-           <ul class="navbar-nav ml-auto">
+        {% comment %} <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">drop1</a>
+            <a class="dropdown-item" href="#">drop2</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">drop...</a>
+          </div> {% endcomment %}
 
-              
-               {% if user.is_authenticated %} 
-               <div class="topbar-divider d-none d-sm-block"></div>
-               <li class="nav-item mx-3 my-2"><a href="/buset/cart" uk-icon="icon: cart"></a></li>
-               <li class="nav-item mx-3 my-2"><a href="" uk-icon="icon: heart"></a></li>
-               <li class="nav-item mx-3 my-2"><a href="/buset/post" uk-icon="icon: plus-circle"><span ></span></a></li>
-               <div class="topbar-divider d-none d-sm-block"></div>
-               
-               <!-- Nav Item - User Information -->
-               <li class="nav-item dropdown no-arrow">
-                   <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                       <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
-                       <img class="img-profile rounded-circle" style='width:40px; height:40px;'
-                           src="{% static 'buset/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg' %}">{{user.username}}
-                   </a>
-                   <!-- Dropdown - User Information -->
-                   <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                       aria-labelledby="userDropdown">
-                       <a class="dropdown-item" href="#">
-                           <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                           <span uk-icon='user'></span> <span>Profile</span>
-                        </a>
-                        
-                       <a class="dropdown-item" href="#">
-                           <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                           Settings
-                       </a>
-                       <a class="dropdown-item" href="#">
-                           <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                           Activity Log
-                       </a>
-                       
-                       <div class="dropdown-divider"></div>
-                       <a class="dropdown-item" href="/buset/logout">
-                           <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                           <span uk-icon='sign-out'></span> Logout
-                       </a>
-                    </div>
-                       {% else %}
-                       
-                       <a href="/buset/login">
-                           <button class="uk-button uk-margin-small-right"><span uk-icon='sign-in'></span>Masuk</button>
-                           
-                       </a>
-                       <a href="/buset/register">
-                           <button class="uk-button uk-button-primary">Daftar</button>
-                           
-                       </a>
-                       {% endif %}
-                   
-               </li>
 
-           </ul>
+        {% if user.is_authenticated %} 
+ 
+        <div class="input-group-append">
+        <li class="nav-item mx-2 my-auto"><a href="/buset/cart" uk-icon="icon: cart"></a></li>
+        <li class="nav-item mx-2 my-auto"><a href="" uk-icon="icon: heart"></a></li>
+        <li class="nav-item mx-2 my-auto"><a href="/buset/post" uk-icon="icon: plus-circle"><span ></span></a></li>
+        </div>
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                <img class="img-profile rounded-circle" style='width:40px; height:40px;'
+                    src="{% static 'buset/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg' %}">{{user.username}}
+            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <span uk-icon='user'></span> <span>Profile</span>
+                 </a>
+  
+                <a class="dropdown-item" href="/buset/logout">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <span uk-icon='sign-out'></span> Logout
+                </a>
+             </div>
 
-       </nav>
-       <!-- End of Topbar -->
+            
+        </li>
+        {% else %}
+        <div class="nav-item my-auto">        
+        <a href="/buset/login">
+            <button class="uk-button uk-margin-small-right"><span uk-icon='sign-in'></span>Masuk</button>
+            
+        </a>
+        <a href="/buset/register">
+            <button class="uk-button uk-button-primary">Daftar</button>
+            
+        </a>
     </div>
-</div>
+        {% endif %}
+
+      </ul>
+
+      
+      
+      
+    </div>
+  </nav>

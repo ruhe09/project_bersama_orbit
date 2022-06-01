@@ -4,7 +4,8 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
+from django.urls import reverse
+from django.template.defaultfilters import slugify
 
 def _create_hash():
     hash = hashlib.sha1()
@@ -26,11 +27,13 @@ class Posting(models.Model):
     post_image = models.ImageField(upload_to="static/post_img/",null=True, blank=True)
     post_date = models.DateTimeField(auto_now_add=True, blank=True)
     post_date_modified = models.DateTimeField(auto_now=True, null=True)
-    #post_slug = models.SlugField(max_length=255,unique=True)
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
-    def __str__(self):
-        return self.post_title
+    slug = models.SlugField(max_length=255,unique=True,null=True)
+    def url(self):
+        return reverse("article_detail", kwargs={"slug":self.slug})
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.post_title)
+        return super().save(*args, **kwargs)
 
 class Users(models.Model):
     user_name = models.CharField(max_length=30)

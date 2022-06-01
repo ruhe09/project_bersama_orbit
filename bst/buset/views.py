@@ -24,9 +24,15 @@ import torch
 
 register = template.Library()
 
-def MainView(request):
-    context = Posting.objects.all()
-    return render(request,'buset/main.html',{'posts':context})    
+class MainViewList(ListView):
+    model = Posting
+    template_name='buset/main.html'
+class MainViewDetail(DetailView):
+    model = Posting
+    template_name='buset/detail.html'
+# def MainView(request):
+#     context = Posting.objects.all()
+#     return render(request,'buset/main.html',{'posts':context})    
 
 def PostView(request):
     form = PostForm(request.POST or None, request.FILES or None)
