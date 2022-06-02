@@ -1,15 +1,16 @@
 from buset.models import Posting
+# from buset.models import Users
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Cv_Model
+
+from .models import Profile,Cv_Model
 
 
 class UserForm(UserCreationForm):
     email = forms.EmailField(required=True)
-    # phone = forms.PhoneNumberField(required=True)
-    
+    # phone_number = forms.IntegerField(required=True)
     class Meta:
         model = User
         fields = ("first_name", "last_name", "username", "email", "password1", "password2")
@@ -23,6 +24,13 @@ class UserForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ['phonenumber']
+
 class PostForm(forms.ModelForm):
     class Meta:
         model = Posting

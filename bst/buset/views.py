@@ -15,8 +15,8 @@ from django.views import generic
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView
 from PIL import Image as im
-from .forms import Cv_Upload, PostForm, UserForm
-from .models import Cv_Model, Posting
+from .forms import Cv_Upload, PostForm, UserForm, ProfileForm
+from .models import Cv_Model, Posting, Profile
 import joblib
 import pickle
 import torch
@@ -30,9 +30,14 @@ class MainViewList(ListView):
 class MainViewDetail(DetailView):
     model = Posting
     template_name='buset/detail.html'
-# def MainView(request):
-#     context = Posting.objects.all()
-#     return render(request,'buset/main.html',{'posts':context})    
+    template_data={
+        "profile":Profile.objects.all(),
+    }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile'] = Profile.objects.all()
+        return context
+ 
 
 def PostView(request):
     form = PostForm(request.POST or None, request.FILES or None)
@@ -48,19 +53,24 @@ def PostView(request):
     return render(request,'buset/post.html',{'post_form':form})    
 
 def register_proc(request):
+    form = UserForm(request.POST)
+    p_form = ProfileForm(request.POST)
     if request.method == "POST":
         form = UserForm(request.POST)
-        if form.is_valid():
+        p_form = ProfileForm(request.POST)
+        if form.is_valid() and p_form.is_valid():
             user = form.save()
+            p_form = p_form.save(commit=False)
+            p_form.user = user
+            p_form.save()
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
-            messages.success(request, "Berhasil!." )
+            messages.success(request, "Berhasil!" )
             return redirect("main")
         else:
             messages.error(request,"Ada error.")
         messages.error(request, "Registrasi gagal, ada yang salah nih!.")
-    form = UserForm()
-    return render (request=request, template_name="buset/register.html", context={"register_form":form})
+    return render (request=request, template_name="buset/register.html", context={"register_form":form,"additional_form":p_form})
 
 def login_proc(request):
     if request.method == "POST":
@@ -113,7 +123,6 @@ def Cv_View(request):
 
         path_hubconfig = "static/yolov5"
         path_weightfile = "static/best.pt" #hasil training
-        # model=joblib.load("static/layar.pkl")
         model = torch.hub.load(path_hubconfig, 'custom',
                              path=path_weightfile, source='local')
         results = model(img, size=640)
