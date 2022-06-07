@@ -1,0 +1,89 @@
+{
+  "intents": [
+    {
+      "tag": "intro",
+      "patterns": [""],
+      "responses": [
+        "Halo! Selamat datang di Relate (Repair Electronic Website) kami! Kami siap melayani kamu selama 24 jam. Apakah kamu ingin menanyakan apa yang kamu butuhkan?[list]Pilih layanan"
+      ],
+      "context": ["pilih_layanan"]
+    },
+    {
+      "tag": "pilih_layanan",
+      "patterns": ["Pilih layanan"],
+      "responses": [
+        "Kamu lagi butuh apa nih?[list]Perbaikan[list]Pemeliharaan"
+      ],
+      "context": [""]
+    },
+    {
+      "tag": "Opsi user",
+      "patterns": [
+        "Perbaikan",
+        "Pemeliharaan",
+        "Perbaikan/Pemeliharaan",
+        "Keduanya",
+        "Dua-duanya"
+      ],
+      "responses": ["Silakan pilih jenis perangkat elektronik![list]Handphone[list]Laptop[list]Televisi[list]Komputer[list]Speaker[list]Printer[list]Setrika[list]Rice cooker[list]Radio[list]Kulkas[list]Mesin cuci"],
+      "context": [""]
+    },
+    {
+      "tag": "Product",
+      "patterns": [
+        "Handphone",
+        "Phone",
+        "HP",
+        "Gadget",
+        "Laptop",
+        "Televisi",
+        "Komputer",
+        "Speaker",
+        "Printer",
+        "Setrika",
+        "Rice cooker",
+        "Radio",
+        "Kulkas",
+        "Mesin cuci"
+      ],
+      "responses": [
+        "Ada yang bisa kami bantu terkait perangkat tersebut? Masalah apa yang terjadi pada perangkat tersebut?[list]Tidak menyala[list]Kerusakan fisik[list]Kurang berfungsi[list]Lambat beroperasi[list]Mudah panas(overheat)[list]Peningkatan performa"
+      ],
+      "context": [""]
+    },
+    {
+      "tag": "Kendala",
+      "patterns": [
+        "Tidak menyala", "Mati", 
+        "Kerusakan fisik", "retak", 
+        "Kurang berfungsi", "tidak jalan", 
+        "Lambat beroperasi", "lemot",
+        "Mudah panas (Overheat)",
+        "Peningkatan performa", "perawatan"
+      ],
+      "responses": ["Okay!:) Silakan pilih opsi berikut ini![list]Lihat video tutorial[list]Hubungi penyedia layanan reparasi"],
+      "context": [""]
+    },
+    {
+      "tag": "Nama_aku",
+      "patterns": ["Nama kamu siapa?", "kamu siapa?", "ini siapa ya?"],
+      "responses": ["Nama aku adalah RelateBot"],
+      "context": [""]
+    },
+    {
+      "tag": "Pembuat_aku",
+      "patterns": [
+        "Siapa yang buat kamu?",
+        "Siapa pembuat kamu?",
+        "Who created you?",
+        "Who made you?"
+      ],
+      "responses": [
+        "I was created by @Relate",
+        "Created by @Relate",
+        "Dibuat oleh @Relate"
+      ],
+      "context": [""]
+    }
+  ]
+}
