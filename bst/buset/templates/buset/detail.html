@@ -12,10 +12,8 @@
     <p>{{posting.post_description}}</p>
 
     <p>{{posting.post_text}}</p>
-
-    {{user.profile}}
-
-    <a href="https://wa.me/{{profile.phonenumber}}?text=Halo%20{{posting.user}}%20ada%20yang mau langganan nih!"><button class='uk-button uk-button-primary'>HUBUNGI PARTNER</button></a>
+    
+    <a href="https://wa.me/62{{posting.user.profile.phonenumber}}?text=Halo%20{{posting.user}} ada%20yang%20mau%20langganan%20nih%21%0A%0AAku%20dapet%20nomor%20kamu%20dari%20http%3A%2F%2F160.19.227.93%3A8000%2Fbuset%2Fpost%2F{{posting.slug}}%20%21%20Aku%20tertarik%20dengan%20tawaranmu%20yang%20menawarkan%20{{posting.post_title}}%20dengan%20harga%20{% load idr %}{{posting.post_price | currency}}%2C%20tolong%20balas%20pesan%20ini%20ya."><button class='uk-button uk-button-primary'>HUBUNGI PARTNER</button></a>
 
 </article>
 </div>

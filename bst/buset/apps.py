@@ -13,3 +13,5 @@ class BusetConfig(AppConfig):
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+    # def ready(self):
+    #     import buset.signals

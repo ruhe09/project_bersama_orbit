@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import AbstractUser
+from PIL import Image
 
 def _create_hash():
     hash = hashlib.sha1()
@@ -31,9 +32,17 @@ class Posting(models.Model):
     def url(self):
         return reverse("article_detail", kwargs={"slug":self.slug})
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.post_image.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300,300)
+            img.thumbnail(output_size)
+            img.save(self.post_image.path)
         if not self.slug:
             self.slug = slugify(self.post_title)
         return super().save(*args, **kwargs)
+       
+    
 
 
 # class Users(AbstractUser):
@@ -50,9 +59,9 @@ class Posting(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phonenumber = models.CharField(verbose_name="phone number", max_length=11)
+    phonenumber = models.CharField(verbose_name="phone number", max_length=16)
     birthdate = models.DateField(verbose_name="birth date", null=True)
-    image = models.ImageField(upload_to="static/users_img/",null=True, blank=True)
+    image = models.ImageField(default='default.jpg',upload_to="static/users_img/")
 class Shop(models.Model):
     shop_name = models.CharField(max_length=30)
     shop_pp  = models.ImageField(upload_to="static")
@@ -60,6 +69,16 @@ class Shop(models.Model):
     shop_updated = models.DateTimeField(auto_now_add=True)    
   
 class Cv_Model(models.Model):
+    image = models.ImageField(_("image"), upload_to='images')
+
+    class Meta:
+        verbose_name = "Image"
+        verbose_name_plural = "Images"
+
+    def __str__(self):
+        return str(os.path.split(self.image.path)[-1])
+    
+class Bunga_Model(models.Model):
     image = models.ImageField(_("image"), upload_to='images')
 
     class Meta:

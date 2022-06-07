@@ -1,0 +1,48 @@
+{% extends "buset/base.html" %}
+
+{% block content %}      
+
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+{% load static %}
+
+
+<div class="uk-width-auto uk-padding uk-card uk-card-default uk-card-small uk-card-hover uk-padding uk-margin uk-container">
+    <div class="uk-margin">
+        <h1>Laman Profil</h1>
+        <img class="img-profile rounded-circle" style='width:128px; height:128px;' src='/buset/media/{{user.profile.image}}'></img>
+        <table class="uk-table uk-table-divider">
+                <tr>
+                    <th>Nama Pengguna</th>
+                    <td>{{user}}</td>
+                    {{user.profile}}
+                </tr>
+                <tr>
+                    <th>E-mail</th>
+                    <td>{{user.email}}</td>
+                    
+                </tr>
+                <tr>
+                    <th>Nama Depan</th>
+                    <td>{{user.first_name}}</td>
+                </tr>
+                <tr>
+                <th>Nama Belakang</th>
+                <td>{{user.last_name}}</td>
+            </tr>
+            <tr>
+                <th>Nomor Telepon</th>
+                <td>+62{{user.profile.phonenumber}}</td>
+            </tr>
+      
+            
+        </table>
+    
+      {% csrf_token %}
+
+      <a href='/buset/profile_update/'><button class="uk-button uk-button-primary uk-margin-top" type="submit"><span uk-icon='sign-in'></span><span class='buttonText'>Ubah</span></button></a>
+    
+  
+  </div>
+</div>
+{% endblock %}

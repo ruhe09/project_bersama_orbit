@@ -13,9 +13,12 @@ urlpatterns = [
     path('login',views.login_proc, name='login'),
     path('login/',views.login_proc, name='login'),
     path('logout',views.logout_proc, name='logout'),
-    # path('profile',views.profile, name='profile'),
+    path('profile_update/',views.profile_update_proc, name='profile_update'),
+    path('profile_image/',views.profile_img_update_proc, name='profile_image'),
+    path('profile/',views.profile_page, name='profile'),
     path('accounts/', include('allauth.urls')),
     path('cart/', views.CartView, name='cart'),
     path('layar/', views.Cv_View, name='layar'),
     path('faq/', views.FAQ, name='faq'),
+    path('bunga/', views.Bunga_View, name='bunga'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

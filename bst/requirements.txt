@@ -1,0 +1,14 @@
+django
+django-crispy-forms
+mysqlclient
+torch
+pillow
+numpy
+opencv-python
+pandas
+requests
+pyyaml
+tqdm
+torchvision
+matplotlib
+seaborn
