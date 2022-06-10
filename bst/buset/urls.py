@@ -21,4 +21,5 @@ urlpatterns = [
     path('layar/', views.Cv_View, name='layar'),
     path('faq/', views.FAQ, name='faq'),
     path('bunga/', views.Bunga_View, name='bunga'),
+    path('chat/',views.ChatView, name='chat')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

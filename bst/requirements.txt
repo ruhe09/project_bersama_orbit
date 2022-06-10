@@ -12,3 +12,8 @@ tqdm
 torchvision
 matplotlib
 seaborn
+django-allauth
+joblib
+nltk
+keras
+tensorflow
