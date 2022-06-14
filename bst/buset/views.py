@@ -35,24 +35,51 @@ import numpy as np
 from keras.models import load_model
 import json
 import random
+import requests
+from django.http import HttpResponse, HttpRequest
 
 register = template.Library()
 
+def cari(request):
+        if request.method =="GET" or "POST":
+            # urlip = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyB3Wnrze0nVSxFKyVDIUKgp_6k2DrKyf4Q"
+            # responseip = requests.request("POST",urlip)
+            # querloc = responseip.json()
+            # lat=querloc['results']['geometry']['location']
+            # lang=querloc['location']['lang']
+            form = request.GET["textcari"]
+            API_KEY = "AIzaSyB3Wnrze0nVSxFKyVDIUKgp_6k2DrKyf4Q"
+            url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query={form}&type=service&key={API_KEY}"
+            response = requests.request("GET",url)
+            quer = response.json()
+            context=quer['results']
+            jalan=quer['results'][0]['place_id']
+            urly = f"https://www.googleapis.com/youtube/v3/search?q={form}&key={API_KEY}"
+            responsey = requests.request("GET",urly)
+            query = responsey.json()
+            contexty=query['items']
+
+            # urlph = f"https://maps.googleapis.com/maps/api/place/details/json?placeid={jalan}&key=AIzaSyB3Wnrze0nVSxFKyVDIUKgp_6k2DrKyf4Q"
+            # responseph = requests.request("GET",urlph)
+            # querph = responseph.json()
+            # contextph=querph['results']
+            # ph=querph['results']['international_phone_number']
+        return render(request,'buset/cari.html',
+                      {
+                          'quer':quer,
+                          'context':context,
+                          'alamat':jalan,
+                          'cari':url,
+                          'range':range(20),
+                          'youtube':contexty,
+
+                          
+                          }
+                      )  
 class MainViewList(ListView):
     model = Posting
     template_name='buset/main.html'
-    # def cari(request):
-    #     if request.method =='POST':
-    #         form = SearchForm(request.POST or None, request.FILES or None)
-    #         if form_is_valid():
-    #             cari = 
-    #             url = f'https://maps.googleapis.com/maps/api/place/textsearch/json?query=servis+elektronik&location=35.7790905,-78.642413&radius=2000&region=us&type=cafe,bakery'
-    #             headers = {'key': "AIzaSyA3DFYHFEKCRKvE7qbK5pgCzdWEo7J7gWs"}
-    #             parameter = dict(id=pathh)
-    #             response = requests.request('GET',url,headers=headers,params=parameter)
-    #             quer = response.json()
-    #             quer_ex=quer['rajaongkir']['results']['province']
-    #             dispp = render_template('dashboard.html',lokasi=quer_ex,form=1,title='Raja Ongkir Province')
+    
 class MainViewDetail(DetailView):
     model = Posting
     template_name='buset/detail.html'
@@ -194,7 +221,7 @@ def FAQ(request):
     return render(request,'buset/faq.html')
 
 def Cv_View(request):
-    form = Cv_Upload(request.POST, request.FILES)
+    form = Cv_Upload(request.POST or None, request.FILES)
     if form.is_valid():
         img = request.FILES.get('image')
         img_instance = Cv_Model(
