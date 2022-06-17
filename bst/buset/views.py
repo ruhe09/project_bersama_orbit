@@ -1,43 +1,42 @@
 import io
+import json
+import pickle
+import random
 from gc import get_objects
 from urllib import request
+import cv2
+import imutils
+import joblib
+import nltk
+import numpy as np
+import requests
+import torch
 from buset.models import Posting
 from django import template
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.db import connection
-from django.http import HttpResponse
+from django.http import (HttpRequest, HttpResponse, HttpResponseServerError,
+                         StreamingHttpResponse, JsonResponse)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template import loader
 from django.urls import reverse
 from django.views import generic
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView
-from PIL import Image as im
-from .forms import Cv_Upload, PostForm, UserForm, ProfileForm, UserUpdtForm, ProfileUpdtForm, ProfileImgUpdtForm, Bunga_Upload
-from .models import Cv_Model, Posting, Profile, Bunga_Model
-import joblib
-import pickle
-import torch
-from django.contrib.auth.decorators import login_required
-# from django.contrib.gis.utils import GeoIP
-
-# g = GeoIP() 
-# lat,lng = g.lat_lon(user_ip)
-
-import nltk
-from nltk.stem import WordNetLemmatizer
-lemmatizer = WordNetLemmatizer()
-import pickle
-import numpy as np
 from keras.models import load_model
-import json
-import random
-import requests
-from django.http import HttpResponse, HttpRequest
+from nltk.stem import WordNetLemmatizer
+from PIL import Image as im
 
+from .forms import (Bunga_Upload, Cv_Upload, PostForm, ProfileForm,
+                    ProfileImgUpdtForm, ProfileUpdtForm, UserForm,
+                    UserUpdtForm)
+from .models import Bunga_Model, Cv_Model, Posting, Profile
+from django.http import QueryDict
+lemmatizer = WordNetLemmatizer()
 register = template.Library()
 
 def cari(request):
@@ -53,7 +52,7 @@ def cari(request):
             response = requests.request("GET",url)
             quer = response.json()
             context=quer['results']
-            jalan=quer['results'][0]['place_id']
+
             urly = f"https://www.googleapis.com/youtube/v3/search?q={form}&key={API_KEY}"
             responsey = requests.request("GET",urly)
             query = responsey.json()
@@ -68,18 +67,26 @@ def cari(request):
                       {
                           'quer':quer,
                           'context':context,
-                          'alamat':jalan,
                           'cari':url,
                           'range':range(20),
                           'youtube':contexty,
-
+                          'form':form,
                           
                           }
                       )  
+
 class MainViewList(ListView):
     model = Posting
     template_name='buset/main.html'
-    
+
+    def get_context_data(self,**kwargs):
+        API_KEY = "AIzaSyB3Wnrze0nVSxFKyVDIUKgp_6k2DrKyf4Q"
+        url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJ66K-CDjmaC4R_o1bWc2jHL8&key={API_KEY}"
+        response = requests.request("GET",url)
+        quer = response.json()
+        context = super(MainViewList,self).get_context_data(**kwargs)
+        context['context']= quer['result']
+        return context
 class MainViewDetail(DetailView):
     model = Posting
     template_name='buset/detail.html'
@@ -302,67 +309,93 @@ def Bunga_View(request):
     }
     return render(request, 'buset/bunga.html', context)
 def ChatView(request):
-    def get_chatbot_response():
-        userText = request.args.get('msg')
+    userText = request.GET.get("msg",'')
+    model = load_model('static/chatbot/chatbot_model.h5')
+    intents = json.loads(open('static/chatbot/intents.json').read())
+    words = pickle.load(open('static/chatbot/words.pkl','rb'))
+    classes = pickle.load(open('static/chatbot/classes.pkl','rb'))
+
+
+    def clean_up_sentence(sentence):
+        # tokenize the pattern - split words into array
+        sentence_words = nltk.word_tokenize(sentence)
+        # stem each word - create short form for word
+        sentence_words = [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
+        return sentence_words
+
+    def bow(sentence, words, show_details=True):
+        # tokenize the pattern
+        sentence_words = clean_up_sentence(sentence)
+        # bag of words - matrix of N words, vocabulary matrix
+        bag = [0]*len(words)  
+        for s in sentence_words:
+            for i,w in enumerate(words):
+                if w == s: 
+                    # assign 1 if current word is in the vocabulary position
+                    bag[i] = 1
+                    if show_details:
+                        print ("found in bag: %s" % w)
+        return(np.array(bag))
+
+    def predict_class(sentence, model):
+        # filter out predictions below a threshold
+        p = bow(sentence, words,show_details=False)
+        res = model.predict(np.array([p]))[0]
+        ERROR_THRESHOLD = 0.25
+        results = [[i,r] for i,r in enumerate(res) if r>ERROR_THRESHOLD]
+        # sort by strength of probability
+        results.sort(key=lambda x: x[1], reverse=True)
+        return_list = []
+        for r in results:
+            return_list.append({"intent": classes[r[0]], "probability": str(r[1])})
+        return return_list
+
+    def getResponse(ints, intents_json):
+        tag = ints[0]['intent']
+        list_of_intents = intents_json['intents']
+        for i in list_of_intents:
+            if(i['tag']== tag):
+                result = random.choice(i['responses'])
+                break
+        return result
+
+    def chatbot_response(msg):
+        ints = predict_class(msg, model)
+        res = getResponse(ints, intents)
+        return res
+
+    context =   {
+        'status': 1,
+        'response': chatbot_response(userText),
+    } 
+    return JsonResponse(context)
+
+
+camera = cv2.VideoCapture(0)  
+
+
+def gen_frames_2():  
+    while True:
+        success, frame = camera.read() 
+        if not success:
+            break
+        else:
+            frame = imutils.resize(frame, width=128)
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+            path_hubconfig = "static/yolov5"
+            path_weightfile = "static/bunga/best.pt"
+            model = torch.hub.load(path_hubconfig, 'custom',
+                                path=path_weightfile, source='local')
+            results = model(gray, size=128)
+            results.render()
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
 
 
-        model = load_model('static/chatbot-server/chatbot_model.h5')
-        intents = json.loads(open('static/chatbot-server/intents.json').read())
-        words = pickle.load(open('static/chatbot-server/words.pkl','rb'))
-        classes = pickle.load(open('static/chatbot-server/classes.pkl','rb'))
 
 
-        def clean_up_sentence(sentence):
-            # tokenize the pattern - split words into array
-            sentence_words = nltk.word_tokenize(sentence)
-            # stem each word - create short form for word
-            sentence_words = [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
-            return sentence_words
-
-        def bow(sentence, words, show_details=True):
-            # tokenize the pattern
-            sentence_words = clean_up_sentence(sentence)
-            # bag of words - matrix of N words, vocabulary matrix
-            bag = [0]*len(words)  
-            for s in sentence_words:
-                for i,w in enumerate(words):
-                    if w == s: 
-                        # assign 1 if current word is in the vocabulary position
-                        bag[i] = 1
-                        if show_details:
-                            print ("found in bag: %s" % w)
-            return(np.array(bag))
-
-        def predict_class(sentence, model):
-            # filter out predictions below a threshold
-            p = bow(sentence, words,show_details=False)
-            res = model.predict(np.array([p]))[0]
-            ERROR_THRESHOLD = 0.25
-            results = [[i,r] for i,r in enumerate(res) if r>ERROR_THRESHOLD]
-            # sort by strength of probability
-            results.sort(key=lambda x: x[1], reverse=True)
-            return_list = []
-            for r in results:
-                return_list.append({"intent": classes[r[0]], "probability": str(r[1])})
-            return return_list
-
-        def getResponse(ints, intents_json):
-            tag = ints[0]['intent']
-            list_of_intents = intents_json['intents']
-            for i in list_of_intents:
-                if(i['tag']== tag):
-                    result = random.choice(i['responses'])
-                    break
-            return result
-
-        def chatbot_response(msg):
-            ints = predict_class(msg, model)
-            res = getResponse(ints, intents)
-            return res
-
-        return  {
-            'status': 'success',
-            'response': chatbot_response(userText)
-        } 
-    return render(request, 'buset/index.html')
+def VideoView(request):
+    return StreamingHttpResponse(gen_frames_2(),content_type="multipart/x-mixed-replace;boundary=frame")

@@ -1,18 +1,18 @@
 {% extends 'buset/base.html' %}
 {% block content %}
-
+{{response}}
 {% comment %} slideshow {% endcomment %}
 <div class='uk-container uk-margin-top'>
 <div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow="autoplay:true; animation: push;">
     <ul class="uk-slideshow-items">
         <li>
             <div class="uk-position-cover uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
-                <img src="/static/buset/turning-bricked-phone-into-unbricked.jpg" alt="" uk-cover>
+                <img src="/buset/media/turning-bricked-phone-into-unbricked.jpg" alt="" uk-cover>
             </div>
         </li>
         <li>
             <div class="uk-position-cover uk-animation-kenburns uk-animation-reverse uk-transform-origin-top-right">
-                <img src="/static/buset/computer_repair_technician.jpg" alt="" uk-cover>
+                <img src="/buset/media/computer_repair_technician.jpg" alt="" uk-cover>
             </div>
         </li>
 
@@ -22,9 +22,10 @@
     <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
 </div>
 
-{% comment %} post {% endcomment %}
+
 <div class='uk-container uk-flex-center uk-grid uk-grid-small uk-grid-width-responsive '>
-{% for posting in object_list %}
+
+    {% for posting in object_list %}
 <a class="uk-link-heading uk-animation-toggle" tabindex="0" href="{{posting.url}}">
 {% comment %} <a class="uk-link-heading" href="/buset/media/{{post.post_image}}"> {% endcomment %}
 <div class ="uk-animation-fade uk-margin-top uk-card uk-card-default uk-card uk-padding-small uk-card-hover uk-card-body ">
@@ -36,6 +37,19 @@
     </div>
 </a>
 {% endfor %}
+<a class="uk-link-heading uk-animation-toggle" tabindex="0" href="https://wa.me/{{context.international_phone_number}}?text=Halo%20{{context.name}} ada%20yang%20mau%20langganan%20nih%21%0A%0AAku%20dapet%20nomor%20kamu%20dari%20http%3A%2F%2F160.19.227.93%3A8000%2Fbuset%2Fpost%2F%20%21%20Aku%20tertarik%20dengan%20tawaranmu%20%2C%20tolong%20balas%20pesan%20ini%20ya.">
+    <div class ="uk-animation-fade uk-margin-top uk-card uk-card-default uk-card uk-padding-small uk-card-hover uk-card-body ">
+        <img class='img-fluid mh-50' src="{{context.icon}}">
+        <p><h1 class="uk-text-default">Rekomendasi kami!</h1></p>
+        <p><h2 class="uk-text-default">{{context.name}}</h2></p>
+        <p><span uk-icon="star"></span> {{context.rating}}{{context.user_ratings_total}}</p>
+        <p><span uk-icon="phone"></span> {{context.international_phone_number}}</p>
+        <p><span uk-icon='home'></span>{{context.formatted_address}}</p>
+        </div>
+    </a>
+    {% block chat %}
+        {% endblock %}
 </div>
+
 </div>
 {% endblock %}

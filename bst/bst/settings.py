@@ -42,7 +42,7 @@ SECRET_KEY = 'django-insecure-l*ncf+5_q$y!i5!o2diinimj$haojx%9nmlx@f3#+qz=@e9k*k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["160.19.227.93","localhost"]
+ALLOWED_HOSTS = ["127.0.0.1","160.19.227.93","localhost","ee.upi.edu"]
 
 
 # Application definition
@@ -66,6 +66,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount', 
     'allauth.socialaccount.providers.google',
     'places',
+    
+    'corsheaders',
+    'rest_framework',
 ]
 
 STATIC_URL = '/static/'
@@ -77,7 +80,7 @@ PLACES_MARKER_OPTIONS='{"draggable": true}'
 
 
 STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, "static"),
+   os.path.join(BASE_DIR, "static"),os.path.join(BASE_DIR, 'chatbot-client', 'build', 'static')
    ]
 
 SITE_ID = 1
@@ -110,6 +113,7 @@ AUTHENTICATION_BACKENDS = (
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -121,12 +125,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000','http://localhost:8000','http://127.0.0.1:8000','http://160.19.227.93:8000','http://ee.upi.edu','http://ee.upi.edu:8088'
+]
+
 ROOT_URLCONF = 'bst.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'chatbot-client', 'build')],
+        # 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
