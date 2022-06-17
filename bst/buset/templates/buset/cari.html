@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class='uk-container uk-margin-top'>
-    <h1>Mau {{form}} mandiri?</h1>
+    <h1>Mau menyelesaikan permasalahan terkait {{form}} secara mandiri?</h1>
     <div class='card-columns'>
         {% for i in youtube %}
         <div class ="card">
@@ -13,7 +13,7 @@ src="https://www.youtube.com/embed/{{i.id.videoId}}">
         {% endfor %}
         </div>
 
-<h1>Bingung {{form}} Sendiri?</h1>
+<h1>Bingung {{form}} sendiri?</h1>
 <div class='card-columns'>
     {% for i in context %}
     <a class="uk-link-heading uk-animation-toggle" tabindex="0" href="https://www.google.com/maps/search/?api=1&query={{i.geometry.location.lat}}%2C{{i.geometry.location.lng}}">
