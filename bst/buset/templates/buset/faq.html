@@ -4,26 +4,63 @@
 
 
 <div class="uk-container">
-    <ul uk-accordion>
-    <li class="uk-open">
-        <a class="uk-accordion-title" href="#">Item 1</a>
-        <div class="uk-accordion-content">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-    </li>
-    <li>
-        <a class="uk-accordion-title" href="#">Item 2</a>
-        <div class="uk-accordion-content">
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
-        </div>
-    </li>
-    <li>
-        <a class="uk-accordion-title" href="#">Item 3</a>
-        <div class="uk-accordion-content">
-            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat proident.</p>
-        </div>
-    </li>
-</ul>
+    
+    <div class="uk-card uk-card-default uk-card-hover uk-padding">
+    <p></p><h1 class="uk-heading-small">FAQ</h1><ul uk-accordion="">
+        <li class="uk-open">
+          <a class="uk-accordion-title" href="#" aria-expanded="true">Bagaimana transaksi disini?
+          </a>
+          <div class="uk-accordion-content">
+            <ol>
+              <li>
+                Konsumen dapat langsung menghubungi penyedia jasa yang dipilih
+                untuk kemudian membuat kesepakatan mengenai proses perbaikan dan
+                pembayaran terkait perangkat elektronik yang akan diperbaiki.
+              </li>
+              <li>
+                Konsumen dapat langsung melakukan pembayaran sesuai harga yang
+                diposting oleh penyedia jasa ketika sudah fix akan melakukan
+                perbaikan melalui penyedia jasa yang dipilih.
+              </li>
+            </ol>
+          </div>
+        </li>
+        <li class="">
+          <a class="uk-accordion-title" href="#" aria-expanded="false">Bagaimana saya menggunakan website ini?
+          </a>
+          <div class="uk-accordion-content" hidden="">
+            <ol>
+              <li>Untuk membuat akun, dapat memilih tombol 'daftar'</li>
+              <li>Jika sudah memiliki akun, dapat memilih tombol 'masuk'</li>
+              <li>
+                Dari sisi penyedia jasa, dapat membuat postingan terkait jasa
+                yang disediakan serta harga yang ditawarkan
+              </li>
+              <li>
+                Konsumen dapat memasukkan input berupa keluhan terkait kerusakan
+                perangkat elektronik di kolom search
+              </li>
+              <li>
+                Konsumen dapat juga menggunakan chatbot sebagai alternatif lain
+                untuk memasukkan jenis kerusakan yang terjadi pada perangkat
+                elektronik
+              </li>
+              <li>
+                Setelah memasukkan keluhan terkait kerusakan perangkat
+                elektronik, konsumen dapat memilih beberapa solusi yang
+                ditawarkan dalam wesbite: Rekomendasi YouTube (Jika ingin
+                mencoba memperbaiki secara mandiri), Menghubungi penyedia jasa
+                layanan service (melalui postingan dari para partner dan melalui
+                data pelayanan service terdekat yang akan langsung diarahkan
+                melalui google maps)
+              </li>
+            </ol>
+          </div>
+        </li>
+      </ul>
+    
+    
+    </div>
 </div>
 
 {% endblock%}
